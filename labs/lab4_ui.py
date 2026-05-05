@@ -6,6 +6,8 @@ from labs.lab4_rsa import RSACore
 from labs.lab3_rc5 import RC5Manager
 
 class Lab4Frame(tk.Frame):
+    err = "Помилка"
+
     def __init__(self, master):
         super().__init__(master, bg="#B4517F")
         self.public_key = None
@@ -89,7 +91,7 @@ class Lab4Frame(tk.Frame):
                 self.public_key = RSACore.load_public_key(filename)
                 self.log(f"[+] Публічний ключ завантажено з: {os.path.basename(filename)}")
             except Exception as e:
-                messagebox.showerror("Помилка", f"Не вдалося завантажити ключ: {e}")
+                messagebox.showerror(self.err, f"Не вдалося завантажити ключ: {e}")
 
     def load_priv(self):
         filename = filedialog.askopenfilename(title="Виберіть private.pem", filetypes=[("PEM Files", "*.pem"), ("All Files", "*.*")])
@@ -98,11 +100,11 @@ class Lab4Frame(tk.Frame):
                 self.private_key = RSACore.load_private_key(filename)
                 self.log(f"[+] Приватний ключ завантажено з: {os.path.basename(filename)}")
             except Exception as e:
-                messagebox.showerror("Помилка", f"Не вдалося завантажити ключ: {e}")
+                messagebox.showerror(self.err, f"Не вдалося завантажити ключ: {e}")
 
     def encrypt(self):
         if not self.public_key:
-            messagebox.showwarning("Помилка", "Спочатку завантажте або згенеруйте публічний ключ!")
+            messagebox.showwarning(self.err, "Спочатку завантажте або згенеруйте публічний ключ!")
             return
             
         filename = filedialog.askopenfilename(title="Файл для шифрування")
@@ -119,7 +121,7 @@ class Lab4Frame(tk.Frame):
 
     def decrypt(self):
         if not self.private_key:
-            messagebox.showwarning("Помилка", "Спочатку завантажте або згенеруйте приватний ключ!")
+            messagebox.showwarning(self.err, "Спочатку завантажте або згенеруйте приватний ключ!")
             return
             
         filename = filedialog.askopenfilename(title="Файл для дешифрування")
@@ -138,7 +140,6 @@ class Lab4Frame(tk.Frame):
                 self.log(f"[-] Помилка дешифрування: {e}")
                 
     def select_and_benchmark(self):
-        """Проміжний метод для вибору файлу перед тестуванням."""
         filename = filedialog.askopenfilename(title="Виберіть файл для тестування швидкості")
         if filename:
             self.run_benchmark(filename)

@@ -47,7 +47,7 @@ def test_verify_incorrect_data():
     assert is_valid is False
 
 def test_verify_incorrect_signature():
-    priv, pub = DSACore.generate_keys(1024)
+    _, pub = DSACore.generate_keys(1024)
     data = b"Data"
     
     fake_signature = b"a" * 40 

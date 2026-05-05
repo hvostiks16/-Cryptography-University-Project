@@ -4,6 +4,8 @@ import os
 from labs.lab5_dsa import DSACore 
 
 class Lab5Frame(tk.Frame):
+    err = "Помилка"
+
     def __init__(self, master):
         super().__init__(master, bg="#B4517F")
         self.public_key = None
@@ -91,7 +93,7 @@ class Lab5Frame(tk.Frame):
                 self.private_key = DSACore.load_private_key(filename)
                 self.log(f"[+] Приватний ключ завантажено: {os.path.basename(filename)}")
             except Exception as e:
-                messagebox.showerror("Помилка", f"Не вдалося завантажити ключ: {e}")
+                messagebox.showerror(self.err, f"Не вдалося завантажити ключ: {e}")
 
     def load_pub(self):
         filename = filedialog.askopenfilename(title="Виберіть public key", filetypes=[("PEM Files", "*.pem"), ("All Files", "*.*")])
@@ -100,15 +102,15 @@ class Lab5Frame(tk.Frame):
                 self.public_key = DSACore.load_public_key(filename)
                 self.log(f"[+] Публічний ключ завантажено: {os.path.basename(filename)}")
             except Exception as e:
-                messagebox.showerror("Помилка", f"Не вдалося завантажити ключ: {e}")
+                messagebox.showerror(self.err, f"Не вдалося завантажити ключ: {e}")
 
     def sign_text(self):
         if not self.private_key:
-            messagebox.showwarning("Помилка", "Спочатку завантажте приватний ключ!")
+            messagebox.showwarning(self.err, "Спочатку завантажте приватний ключ!")
             return
         text_data = self.text_input.get().encode()
         if not text_data:
-            messagebox.showwarning("Помилка", "Поле вводу порожнє!")
+            messagebox.showwarning(self.err, "Поле вводу порожнє!")
             return
         
         signature = DSACore.sign_data(self.private_key, text_data)
@@ -117,7 +119,7 @@ class Lab5Frame(tk.Frame):
 
     def sign_file(self):
         if not self.private_key:
-            messagebox.showwarning("Помилка", "Завантажте приватний ключ!")
+            messagebox.showwarning(self.err, "Завантажте приватний ключ!")
             return
         path = filedialog.askopenfilename(title="Виберіть файл для підпису")
         if path:
@@ -136,7 +138,7 @@ class Lab5Frame(tk.Frame):
 
     def verify_file(self):
         if not self.public_key:
-            messagebox.showwarning("Помилка", "Завантажте публічний ключ!")
+            messagebox.showwarning(self.err, "Завантажте публічний ключ!")
             return
         
         file_path = filedialog.askopenfilename(title="Виберіть файл даних")
@@ -167,7 +169,7 @@ class Lab5Frame(tk.Frame):
                     f.write(self.text_output.get("1.0", tk.END))
                 messagebox.showinfo("Успіх", "Журнал успішно збережено!")
             except Exception as e:
-                messagebox.showerror("Помилка", f"Не вдалося зберегти файл: {e}")
+                messagebox.showerror(self.err, f"Не вдалося зберегти файл: {e}")
 
 if __name__ == "__main__":
     root = tk.Tk()

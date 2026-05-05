@@ -38,10 +38,10 @@ def test_derive_key(mock_md5_hash):
 
 
 @patch('labs.lab3_rc5.LCGCore')
-def test_generate_iv(MockLCGCore):
+def test_generate_iv(mock_lcg_core):
     mock_lcg_instance = MagicMock()
     mock_lcg_instance.lcg.return_value = [255] * 16 
-    MockLCGCore.return_value = mock_lcg_instance
+    mock_lcg_core.return_value = mock_lcg_instance
     
     iv = RC5Manager.generate_iv()
     assert len(iv) == RC5Manager.BLOCK_SIZE
