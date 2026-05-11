@@ -185,7 +185,9 @@ class Lab4Frame(tk.Frame):
 
             if rc5_enc_time > 0:
                 ratio = rsa_enc_time / rc5_enc_time
-                self.log(f"\nРезультат: RC5 швидший за RSA у {ratio:.1f} разів.")
+                self.log(f"\nРезультат: ширування RC5 швидше за RSA у {ratio:.1f} разів.")
+                ratio = rsa_dec_time / rc5_dec_time
+                self.log(f"\nРезультат: деширування RC5 швидше за RSA у {ratio:.1f} разів.")
         except Exception as e:
             self.log(f"[!] Сталася помилка під час тестування: {str(e)}")
         finally:
